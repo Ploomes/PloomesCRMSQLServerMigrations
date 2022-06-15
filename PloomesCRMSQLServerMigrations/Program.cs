@@ -16,6 +16,7 @@ var upgrader = DeployChanges.To
     .SqlDatabase(connectionString)
     .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly(), (string s) => !s.StartsWith("PloomesCRMSQLServerMigrations.Scripts.Shard") 
                                                                     || (!string.IsNullOrEmpty(shard) && s.StartsWith("PloomesCRMSQLServerMigrations.Scripts." + shard)))
+    .WithTransactionAlwaysRollback()
     .LogToConsole()
     .Build();
 
