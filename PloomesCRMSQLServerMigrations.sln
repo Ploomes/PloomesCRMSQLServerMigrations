@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32210.238
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PloomesCRMSQLServerMigrations", "PloomesCRMSQLServerMigrations\PloomesCRMSQLServerMigrations.csproj", "{0F896FEA-DA9D-440F-925B-F4CB828D060F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F896FEA-DA9D-440F-925B-F4CB828D060F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F896FEA-DA9D-440F-925B-F4CB828D060F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F896FEA-DA9D-440F-925B-F4CB828D060F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F896FEA-DA9D-440F-925B-F4CB828D060F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8BD8257-BC94-4C35-9EC9-FAB2EDD3E23C}
+	EndGlobalSection
+EndGlobal
