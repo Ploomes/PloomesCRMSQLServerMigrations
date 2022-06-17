@@ -1,51 +1,38 @@
-﻿using DbUp;
-using Microsoft.Extensions.Configuration;
-using System.Reflection;
-
-var configuration = new ConfigurationBuilder()
-     .SetBasePath(Directory.GetCurrentDirectory())
-     .AddJsonFile($"appsettings.json");
-
-var config = configuration.Build();
-var connectionString = config["ConnectionString"];
-var shard = config["Shard"];
-
-var xd = Assembly.GetExecutingAssembly();
-
-var upgrader = DeployChanges.To
-    .SqlDatabase(connectionString)
-    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly(), (string s) => !s.StartsWith("PloomesCRMSQLServerMigrations.Scripts.Shard") 
-                                                                    || (!string.IsNullOrEmpty(shard) && s.StartsWith("PloomesCRMSQLServerMigrations.Scripts." + shard)))
-    .WithTransactionAlwaysRollback()
-    .LogToConsole()
+﻿Configuration options = new();
+using IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureAppConfiguration((hostingContext, configuration) =>
+    {
+        configuration.Sources.Clear();
+        IHostEnvironment env = hostingContext.HostingEnvironment;
+        configuration
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true)
+            .Build()
+            .Bind(options);
+    })
     .Build();
 
-var executedScripts = upgrader.GetExecutedScripts();
-if (executedScripts.Any())
-    Console.WriteLine("Executed scripts:");
-Console.ForegroundColor = ConsoleColor.Blue;
-foreach (string executedScript in executedScripts)
-    Console.WriteLine("- " + executedScript);
-Console.ResetColor();
-
-var scriptsToExecute = upgrader.GetScriptsToExecute();
-if (scriptsToExecute.Any())
-    Console.WriteLine("Scripts to execute:");
-Console.ForegroundColor = ConsoleColor.Yellow;
-foreach (var scriptToExecute in scriptsToExecute)
-    Console.WriteLine("- " + scriptToExecute.Name);
-Console.ResetColor();
-
-var result = upgrader.PerformUpgrade();
-
-if (!result.Successful)
+Console.WriteLine("Select a database to deploy");
+foreach(var item in options.Databases.Select((value, i) => new { i, value }))
 {
-    Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine(result.Error);
-    Console.ResetColor();
-    return;
+    Console.WriteLine(item.i + " - " + item.value.Name);
 }
 
-Console.ForegroundColor = ConsoleColor.Green;
-Console.WriteLine(value: "Success!");
-Console.ResetColor();
+int selectedDatabase = Convert.ToInt32(Console.ReadLine());
+
+Func<string, bool> generalFilter = scriptName => scriptName.StartsWith("PloomesCRMSQLServerMigrations.Scripts.", StringComparison.OrdinalIgnoreCase);
+var generalUpgrader = DbUpUtilities.CreateUpgrader(options.Databases[selectedDatabase].ConnectionString, generalFilter);
+
+Func<string, bool> procedureFilter = scriptName => scriptName.StartsWith("PloomesCRMSQLServerMigrations.Procedures.", StringComparison.OrdinalIgnoreCase);
+var procedureUpgrader = DbUpUtilities.CreateUpgraderWithNullJournal(options.Databases[selectedDatabase].ConnectionString, procedureFilter);
+
+Func<string, bool> specificFilter = scriptName => scriptName.StartsWith("PloomesCRMSQLServerMigrations." + options.Databases[selectedDatabase].Name, StringComparison.OrdinalIgnoreCase);
+var specificUpgrader = DbUpUtilities.CreateUpgrader(options.Databases[selectedDatabase].ConnectionString, specificFilter);
+
+Func<string, bool> viewFilter = scriptName => scriptName.StartsWith("PloomesCRMSQLServerMigrations.Views.", StringComparison.OrdinalIgnoreCase);
+var viewUpgrader = DbUpUtilities.CreateUpgraderWithNullJournal(options.Databases[selectedDatabase].ConnectionString, viewFilter);
+
+DbUpUtilities.ExecuteUpgrader(generalUpgrader);
+DbUpUtilities.ExecuteUpgrader(procedureUpgrader);
+DbUpUtilities.ExecuteUpgrader(specificUpgrader);
+DbUpUtilities.ExecuteUpgrader(viewUpgrader);

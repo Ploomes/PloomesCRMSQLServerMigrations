@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Procedures\dbo.Anexo_Insert.StoredProcedure.sql" />
     <None Remove="Scripts\Shard1Teste06.sql" />
     <None Remove="Scripts\Shard2Teste06.sql" />
     <None Remove="Scripts\Teste.sql" />
@@ -15,25 +16,34 @@
     <None Remove="Scripts\Teste03.sql" />
     <None Remove="Scripts\Teste04.sql" />
     <None Remove="Scripts\Teste05.sql" />
+    <None Remove="Shard1\Teste.sql" />
+    <None Remove="Views\RefreshViews.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Scripts\Shard1Teste06.sql" />
+    <EmbeddedResource Include="Procedures\dbo.Anexo_Insert.StoredProcedure.sql" />
     <EmbeddedResource Include="Scripts\Teste.sql" />
     <EmbeddedResource Include="Scripts\Teste02.sql" />
-    <EmbeddedResource Include="Scripts\Teste03.sql" />
-    <EmbeddedResource Include="Scripts\Teste04.sql" />
-    <EmbeddedResource Include="Scripts\Teste05.sql" />
-    <EmbeddedResource Include="Scripts\Shard2Teste06.sql" />
+    <EmbeddedResource Include="Shard1\Teste.sql" />
+    <EmbeddedResource Include="Views\RefreshViews.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="dbup-core" Version="4.6.3" />
     <PackageReference Include="dbup-sqlserver" Version="4.6.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0-preview.5.22301.12" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0-preview.5.22301.12" />
   </ItemGroup>
-
+	
+  <ItemGroup>
+	<Using Include="DbUp" />
+	<Using Include="Microsoft.Extensions.Configuration" />
+	<Using Include="Microsoft.Extensions.Hosting" />
+	<Using Include="PloomesCRMSQLServerMigrations" />
+	<Using Include="System.Reflection" />
+  </ItemGroup>
+	
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
