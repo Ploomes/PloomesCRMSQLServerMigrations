@@ -25,8 +25,7 @@ namespace PloomesCRMSQLServerMigrations
         { 
             Console.WriteLine("Starting upgrader...");
 
-            // testar esse relatorio dps
-            // upgrader.GenerateUpgradeHtmlReport(Directory.GetCurrentDirectory());
+            //upgrader.GenerateUpgradeHtmlReport(<path>);
             
             // executed scripts
             /*var executedScripts = upgrader.GetExecutedScripts();
