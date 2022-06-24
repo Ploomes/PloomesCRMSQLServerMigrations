@@ -38,3 +38,8 @@ O Journal com o controle utilizamos em Scripts e em Shard'n', pois queremos ter 
 
 Todas as UpgradeEngines são criadas com WithTransactionAlwaysRollback.
 Qualquer erro que ocorrer em um upgrade acontecerá o rollback.
+
+## Relatório
+Existe a possibilidade de gerar um Html contendo o que foi executado.
+![rel](https://user-images.githubusercontent.com/42729316/175650384-cd7c24bf-4e27-4803-bcca-00587ab3253d.png)
+Ps: Essa feature não está implementada.
