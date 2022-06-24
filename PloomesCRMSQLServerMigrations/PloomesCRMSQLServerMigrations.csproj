@@ -42,6 +42,7 @@
 	<Using Include="Microsoft.Extensions.Hosting" />
 	<Using Include="PloomesCRMSQLServerMigrations" />
 	<Using Include="System.Reflection" />
+	<Using Include="DbUp.Engine" />
   </ItemGroup>
 	
   <ItemGroup>
