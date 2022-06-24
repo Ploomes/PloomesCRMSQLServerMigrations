@@ -35,3 +35,6 @@ O Journal vazio utilizamos em Procedures e Views, pois queremos que sejam execut
 O Journal com o controle utilizamos em Scripts e em Shard'n', pois queremos ter o controle do que já foi executado ou não.
 
 É importante lembrar que no Journal padrão, pelo fato de ter o controle na forma de migrations, quaisquer alterações que se deseja fazer deve ser realizada em um novo script, pois ele não estará na tabela do banco, sendo assim executado.
+
+Todas as UpgradeEngines são criadas com WithTransactionAlwaysRollback.
+Qualquer erro que ocorrer em um upgrade acontecerá o rollback.
